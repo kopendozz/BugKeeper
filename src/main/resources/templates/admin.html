@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en-us">
+<head>
+    <title>Administrations | BugKeeper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.4.1/css/bootstrap.min.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+    <script type="application/javascript" th:src="@{/webjars/jquery/1.12.4/jquery.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/utils.js}"></script>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<h4><a class="administrations-menu" th:href="@{/admin/projects}">Project Customization</a></h4>
+<h4><a class="administrations-menu" th:href="@{/admin/users}">User Management</a></h4>
+</body>
+</html>

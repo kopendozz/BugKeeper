@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en-us">
+<head>
+    <title>Select Project | BugKeeper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.4.1/css/bootstrap.min.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+    <script type="application/javascript" th:src="@{/webjars/jquery/1.12.4/jquery.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/utils.js}"></script>
+    <script type="application/javascript" th:src="@{/js/projectselector.js}"></script>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+<div class="form-inline" style="text-align: center">
+    <span>Please select a project: </span>
+    <select id="project" class="form-control" style="width: auto" name="project">
+        <option th:each="project : ${projects}" th:value="${project.id}" th:text="${project.name}"></option>
+    </select>
+    <button type="submit" class="btn btn-primary" style="margin-left: 10px"
+            onclick="selectProject()">Go
+    </button>
+</div>
+</body>
+</html>

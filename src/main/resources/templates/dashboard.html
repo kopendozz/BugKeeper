@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en-us">
+<head>
+    <title>Dashboard | BugKeeper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.4.1/css/bootstrap.min.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/webjars/datatables/1.13.5/css/jquery.dataTables.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+    <script type="application/javascript" th:src="@{/webjars/jquery/1.12.4/jquery.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/datatables/1.13.5/js/jquery.dataTables.js}"></script>
+    <script type="application/javascript" th:src="@{/js/projectselector.js}"></script>
+    <script type="application/javascript" th:src="@{/js/dashboard.js}"></script>
+    <script type="application/javascript" th:src="@{/js/utils.js}"></script>
+</head>
+<body th:onload="'javascript:setSelectedProject(\'' + ${session?.currentProject?.getId()} + '\');'">
+<div th:insert="~{header :: header}"></div>
+<div class="form-inline">
+    <div class="row" style="margin: 0 20px 20px 20px;">
+        <div class="pull-left" style="display: inline-block;">
+            <button type="button" class="btn btn-primary" onclick="window.location.replace('/issues/new')">Add Issue
+            </button>
+        </div>
+        <div class="pull-right" style="display: inline-block;">
+            <div class="form-inline" style="text-align: center"
+                 th:onload="'javascript:setSelectedProject(\'' + ${session?.currentProject?.getId()} + '\');'">
+                <span>Please select a project: </span>
+                <select id="project" class="form-control" style="width: auto" name="project">
+                    <option th:each="project : ${projects}" th:value="${project?.getId()}"
+                            th:text="${project?.getName()}"></option>
+                </select>
+                <button type="submit" class="btn btn-primary" style="margin-left: 10px"
+                        onclick="selectProject()">Go
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<table id="issuesList" class="table table-bordered">
+    <thead>
+    <tr>
+        <td class="id-table-cell">ID</td>
+        <td class="priority-table-cell">PRIORITY</td>
+        <td>NAME</td>
+        <td hidden="hidden">DESCRIPTION</td>
+        <td class="user-table-cell">ASSIGNED TO</td>
+        <td class="status-table-cell">STATUS</td>
+        <td class="user-table-cell">REPORTER</td>
+        <td class="timestamp-table-cell">CREATED</td>
+        <td class="timestamp-table-cell">LAST UPDATED</td>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <td class="id-table-cell">ID</td>
+        <td class="priority-table-cell">PRIORITY</td>
+        <td>NAME</td>
+        <td hidden="hidden">DESCRIPTION</td>
+        <td class="user-table-cell">ASSIGNED TO</td>
+        <td class="status-table-cell">STATUS</td>
+        <td class="user-table-cell">REPORTER</td>
+        <td class="timestamp-table-cell">CREATED</td>
+        <td class="timestamp-table-cell">LAST UPDATED</td>
+    </tr>
+    </tfoot>
+    <tbody>
+    <tr th:each="issue : ${issues}" th:classappend="'status' + ${issue?.getStatus()?.getId()}">
+        <td class="id-table-cell"><a class="link-color" th:href="@{/issues/{issueId}/show(issueId=${issue?.getId()})}"
+                                     th:text="${issue?.getId()}"></a></td>
+        <td class="priority-table-cell" th:text="${issue?.getPriority()?.getName()}"></td>
+        <td><a class="link-color" th:href="@{/issues/{issueId}/show(issueId=${issue?.getId()})}"
+               th:text="${issue?.getName()}"></a></td>
+        <td hidden="hidden" th:text="${issue?.getDescription()}"></td>
+        <td class="user-table-cell" th:text="${issue?.getResponsible()?.getFullName()}"></td>
+        <td class="status-table-cell" th:text="${issue?.getStatus()?.getName()}"></td>
+        <td class="user-table-cell" th:text="${issue?.getReporter()?.getFullName()}"></td>
+        <td class="timestamp-table-cell" th:text="${issue?.getCreatedAt()}"></td>
+        <td class="timestamp-table-cell" th:text="${issue?.getLastUpdated()}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
