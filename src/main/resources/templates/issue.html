@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en-us">
+<head>
+    <title>Issue | BugKeeper</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.4.1/css/bootstrap.min.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/webjars/jquery-ui/1.13.2/jquery-ui.theme.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/pure/0.6.2/pure-min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/issue.css}"/>
+
+    <script type="application/javascript" th:src="@{/webjars/jquery/1.12.4/jquery.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/jquery-ui/1.13.2/jquery-ui.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/jquery-validation/1.20.0/jquery.validate.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/jquery-validation/1.20.0/additional-methods.js}"></script>
+    <script type="application/javascript" th:src="@{/js/issue.js}"></script>
+    <script type="application/javascript" th:src="@{/js/utils.js}"></script>
+</head>
+
+<body>
+
+<div th:insert="~{header :: header}"></div>
+
+<form id="issueForm" name="issueForm" autocomplete="off" class="form-inline issue-form-location">
+    <div class="form-group">
+        <div th:if="${action == 'creation'}">
+            <input type="hidden" name="id"/>
+            <input type="hidden" name="createdAt"/>
+            <input type="hidden" name="project" th:value="${session?.currentProject?.getId()}"/>
+            <input type="hidden" name="reporter" th:value="${session?.currentUser?.getUsername()}"/>
+            <input type="hidden" name="status" th:value="1"/>
+        </div>
+        <div th:if="${action == 'update'}">
+            <input type="hidden" name="id" th:value="${issue?.getId()}"/>
+            <input type="hidden" name="createdAt" th:value="${issue?.getCreatedAt()}"/>
+            <input type="hidden" name="project" th:value="${issue?.getProject()?.getId()}"/>
+            <input type="hidden" name="reporter" th:value="${issue?.getReporter()?.getUsername()}"/>
+        </div>
+        <div th:if="${action == 'creation' || action == 'update'}">
+            <div class="input-margin">
+                <label class="required" for="priority">Priority</label>
+                <select id="priority" class="form-control priority-dropdown-location" name="priority">
+                    <option value="" disabled="disabled" selected="selected" style="display: none">Please choose
+                    </option>
+                    <option th:each="priority : ${priorities}" th:value="${priority?.getId()}"
+                            th:text="${priority?.getName()}"></option>
+                </select>
+            </div>
+            <div th:if="${action == 'update'}">
+                <div class="input-margin">
+                    <label for="status" class="required">Status</label>
+                    <select id="status" class="form-control status-dropdown-location" name="status">
+                        <option th:each="status : ${statuses}" th:value="${status?.getId()}"
+                                th:text="${status?.getName()}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-margin">
+                <label class="required" for="responsible">Assign to</label>
+                <select id="responsible" class="form-control responsible-dropdown-location" name="responsible">
+                    <option value="" disabled="disabled" selected="selected" style="display: none">Please choose
+                    </option>
+                    <option th:each="user : ${users}" th:value="${user?.getUsername()}"
+                            th:text="${user?.getFullName()}"></option>
+                </select>
+            </div>
+            <div class="input-margin">
+                <label for="name" class="required">Issue name</label>
+                <input id="name" type="text" class="form-control name-input-location" name="name"
+                       placeholder="Enter issue name"/>
+            </div>
+            <div class="input-margin">
+                <label for="description" class="required">Description</label>
+                <textarea id="description" class="form-control description-area-location" name="description"
+                          placeholder="Enter issue description"></textarea>
+            </div>
+        </div>
+
+        <div th:if="${action == 'show'}">
+            <div class="input-margin">
+                <label>Priority</label>
+                <span class="readonly-priority-field-location" th:text="${issue?.getPriority()?.getName()}"></span>
+            </div>
+            <div class="input-margin">
+                <label>Status</label>
+                <span class="readonly-status-field-location" th:text="${issue?.getStatus()?.getName()}"></span>
+            </div>
+            <div class="input-margin">
+                <label>Assigned to</label>
+                <span class="user-field-readonly" th:text="${issue?.getResponsible()?.getFullName()}"></span>
+            </div>
+            <div class="input-margin">
+                <label>Reported by</label>
+                <span class="user-field-readonly" th:text="${issue?.getReporter()?.getFullName()}"></span>
+            </div>
+            <div class="input-margin">
+                <label>Created</label>
+                <span class="created-field-readonly" th:text="${issue?.getCreatedAt()}"></span>
+            </div>
+            <div class="input-margin">
+                <label>Issue name</label>
+                <span class="name-field-readonly" th:text="${issue?.getName()}"></span>
+            </div>
+            <div class="input-margin">
+                <label for="description-readonly">Description</label>
+                <textarea id="description-readonly" disabled="disabled"
+                          class="form-control description-field-readonly"
+                          th:text="${issue?.getDescription()}"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="issue-buttons-location">
+        <div th:if="${action == 'creation' || action == 'update'}">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" onclick="window.location.replace('/issues')">Cancel</button>
+        </div>
+
+        <div th:if="${action == 'show'}">
+            <a class="btn btn-primary" th:href="@{/issues/{issueId}/update(issueId=${issue.id})}">Update</a>
+            <a class="btn btn-default" th:href="@{/issues}">Close</a>
+            <button sec:authorize="hasRole('ADMIN')" id="deleteIssueButton" type="button" class="btn btn-danger"
+                    th:attr="issueId=${issue.id}" onclick="deleteIssue()">Delete
+            </button>
+        </div>
+    </div>
+</form>
+
+
+<div th:if="${action == 'show'}">
+    <div class="margin-location">
+        <label>Attachments</label>
+        <table>
+            <tr th:each="attachment : ${issue?.getAttachments()}" style="height: 30px">
+                <td th:if="${attachment?.isImage()}"><a th:href="@{/attachment/retrieveFile(id=${attachment?.getId()})}"
+                                                        target="_blank" style="display: block"
+                                                        th:text="${attachment?.getName()}"></a>
+                </td>
+                <td th:if="${attachment?.isImage() == false}">
+                    <a th:href="@{/attachment/retrieveFile(id=${attachment?.getId()})}"
+                       th:attr="download=${attachment?.name}" style="display: block"
+                       th:text="${attachment?.getName()}"></a>
+                </td>
+                <td style="width: 50px; text-align: center">
+                    <a th:data="${attachment?.getId()}" style="cursor: pointer; display: inline-block"
+                       onclick="deleteAttachment(this.getAttribute('data'))"><span
+                            class="glyphicon glyphicon-trash"></span></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="container">
+        <form th:action="@{/attachment/uploadFile}" method="post" enctype="multipart/form-data">
+            <div id="selectedFileDiv" class="pure-button fileContainer pull-left" style="display:none;">
+                <i class="icon-remove" onclick="selectNewFile()"></i>
+                <span id="filename"></span>
+            </div>
+            <div id="uploadDiv" class="pure-button fileContainer pull-left">
+                <i class="icon-cloud-upload"></i>
+                <span>Select file</span>
+                <input type="file" name="file" id="uploadInput" onchange="enableUpload()"/>
+            </div>
+            <input hidden="hidden" name="issueId" th:value="${issue?.getId()}"/>
+            <input type="submit" value="Upload" id="submitButton" th:onclick="window.location.reload()"
+                   class="pure-button pure-button-primary pull-left" style="margin-left:10px;" disabled="disabled"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>
