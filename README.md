@@ -59,3 +59,20 @@ git clone https://github.com/kopendozz/BugKeeper.git
 10. Run configuration
 
 Once booted the application will be available at [`http://localhost:8080`](http://localhost:8080)
+
+## Testability Features
+
+Building applications with testability in mind is crucial for a robust testing strategy. This project exemplifies this approach by implementing several key features that enhance testability.  We'll explore these features and their implementation details below.
+
+### App versioning
+
+The application version should be readily available for users to see, both within the user interface (UI)  - such as the footer - and through an API. This transparency is crucial for several reasons. First, it ensures that testers and QA engineers are verifying the correct build, containing the intended changes and fixes. Second, including the app version in bug reports is a best practice. This information is valuable not only for identifying release candidates (RCs) but also for pinpointing when an issue first arose in the development process.
+
+### Documented APIs
+
+Thorough API documentation, ideally using a tool like Swagger, is a best practice for several reasons.
+
+* **Clarity and Accessibility:** It clearly communicates the available APIs and how to interact with them. This is valuable for both external systems consuming your data and internal teams automating tests.
+* **Enhanced Security:** It helps mitigate **2** of **OWASP top 10** security risks.
+    * **API2: Broken Authentication:** If an API is undocumented, it might not be properly secured with authentication mechanisms, making it vulnerable to unauthorized access.
+    * **API9: Improper Inventory Management:** Undocumented APIs are essentially "forgotten" APIs. This lack of proper management can lead to them remaining unpatched and exposed to vulnerabilities.

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "google-translate-client", url = "${google.translate.url}", configuration = BugKeeperClientConfig.class)
 public interface GoogleTranslateClient {
 
-    public static final String TRANSLATE_BASE_ENDPOINT = "/language/translate/v2";
-    public static final String DETECT_ENDPOINT = TRANSLATE_BASE_ENDPOINT + "/detect";
+    String TRANSLATE_BASE_ENDPOINT = "/language/translate/v2";
+    String DETECT_ENDPOINT = TRANSLATE_BASE_ENDPOINT + "/detect";
     
     @PostMapping(value = DETECT_ENDPOINT)
     DetectedLanguagesList detectLanguage(@RequestParam("q") String q);
