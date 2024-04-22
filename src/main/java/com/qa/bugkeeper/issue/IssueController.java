@@ -15,7 +15,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static com.qa.bugkeeper.constant.BugKeeperConstants.*;
@@ -29,6 +28,7 @@ public class IssueController {
     private final PriorityRepository priorityRepository;
     private final StatusRepository statusRepository;
     private final IssueRepository issueRepository;
+    private final IssueService issueService;
 
     @GetMapping(value = {"/", "/issues**"})
     public String showHome(ModelMap model, HttpServletRequest request, Principal principal) {
@@ -62,10 +62,7 @@ public class IssueController {
     @PostMapping(value = "/issues/save")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void saveIssue(@RequestBody Issue issue) {
-        var now = LocalDateTime.now();
-        issue.setCreatedAt(now);
-        issue.setLastUpdated(now);
-        issueRepository.save(issue);
+        issueService.save(issue);
     }
 
     @GetMapping(value = "/issues/{id}/show")
@@ -100,16 +97,16 @@ public class IssueController {
         return "issue";
     }
 
+    @DeleteMapping(value = "/issues/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteIssue(@PathVariable(ID) long id) {
+        issueRepository.deleteById(id);
+    }
+
     private boolean hasNoAccessToIssue(long id, Principal principal) {
         return userRepository.getReferenceById(principal.getName()).getProjects()
                 .stream()
                 .flatMap(project -> project.getIssues().stream())
                 .noneMatch(issue -> Objects.equals(issue.getId(), id));
-    }
-
-    @DeleteMapping(value = "/issues/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteIssue(@PathVariable(ID) long id) {
-        issueRepository.deleteById(id);
     }
 }
