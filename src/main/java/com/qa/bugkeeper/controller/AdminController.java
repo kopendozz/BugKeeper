@@ -2,14 +2,15 @@ package com.qa.bugkeeper.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.qa.bugkeeper.entity.Project;
-import com.qa.bugkeeper.repository.ProjectRepository;
-import com.qa.bugkeeper.entity.View;
 import com.qa.bugkeeper.entity.UserEntity;
+import com.qa.bugkeeper.entity.View;
+import com.qa.bugkeeper.repository.ProjectRepository;
 import com.qa.bugkeeper.repository.UserRepository;
 import com.qa.bugkeeper.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.qa.bugkeeper.constant.BugKeeperConstants.*;
 
-@RestController
+@Controller
 @RequestMapping(value = "/admin")
 @RequiredArgsConstructor
 public class AdminController {
@@ -42,6 +43,7 @@ public class AdminController {
     }
 
     @JsonView(View.Projects.class)
+    @ResponseBody
     @GetMapping(value = "/projects/{id}")
     public Project getProject(@PathVariable(ID) Long id) {
         return projectRepository.getReferenceById(id);

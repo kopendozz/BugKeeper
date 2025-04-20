@@ -13,6 +13,7 @@ import com.qa.bugkeeper.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ import java.util.Objects;
 
 import static com.qa.bugkeeper.constant.BugKeeperConstants.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class IssueController {
 
@@ -81,6 +82,7 @@ public class IssueController {
     }
 
     @JsonView(View.Issues.class)
+    @ResponseBody
     @GetMapping(value = "/issues/{id}")
     public Issue getIssue(@PathVariable(ID) long id) {
         return issueRepository.getReferenceById(id);
