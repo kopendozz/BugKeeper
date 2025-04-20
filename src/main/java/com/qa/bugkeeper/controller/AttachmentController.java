@@ -1,12 +1,13 @@
-package com.qa.bugkeeper.issue.attachment;
+package com.qa.bugkeeper.controller;
 
 import com.qa.bugkeeper.exception.BugKeeperException;
-import com.qa.bugkeeper.issue.IssueRepository;
+import com.qa.bugkeeper.repository.IssueRepository;
+import com.qa.bugkeeper.entity.Attachment;
+import com.qa.bugkeeper.repository.AttachmentRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ import static com.qa.bugkeeper.constant.BugKeeperConstants.ID;
 import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/attachment")
 public class AttachmentController {

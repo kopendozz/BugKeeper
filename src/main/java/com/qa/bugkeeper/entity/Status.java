@@ -1,24 +1,23 @@
-package com.qa.bugkeeper.priority;
+package com.qa.bugkeeper.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.qa.bugkeeper.project.View;
-import com.qa.bugkeeper.issue.Issue;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
 @Table
 @Entity
-public class Priority {
+public class Status implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     @JsonView(value = View.Issues.class)
     private Long id;
 
@@ -27,7 +26,7 @@ public class Priority {
     private String name;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "priority")
+    @OneToMany(mappedBy = "status")
     private List<Issue> issues;
 
     @JsonIgnore

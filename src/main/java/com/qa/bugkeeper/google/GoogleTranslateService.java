@@ -1,6 +1,6 @@
 package com.qa.bugkeeper.google;
 
-import com.qa.bugkeeper.issue.Issue;
+import com.qa.bugkeeper.entity.Issue;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

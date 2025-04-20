@@ -1,13 +1,12 @@
-package com.qa.bugkeeper.project;
+package com.qa.bugkeeper.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.qa.bugkeeper.issue.Issue;
-import com.qa.bugkeeper.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +15,7 @@ import java.util.Set;
 @Setter
 @Table
 @Entity
-public class Project {
+public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

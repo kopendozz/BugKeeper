@@ -1,17 +1,12 @@
-package com.qa.bugkeeper.issue;
+package com.qa.bugkeeper.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.qa.bugkeeper.issue.attachment.Attachment;
-import com.qa.bugkeeper.project.Project;
-import com.qa.bugkeeper.project.View;
-import com.qa.bugkeeper.priority.Priority;
-import com.qa.bugkeeper.status.Status;
-import com.qa.bugkeeper.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,7 +14,7 @@ import java.util.List;
 @Setter
 @Table
 @Entity
-public class Issue {
+public class Issue implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
