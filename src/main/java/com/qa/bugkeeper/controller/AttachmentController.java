@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +18,7 @@ import static com.qa.bugkeeper.constant.BugKeeperConstants.ID;
 import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG;
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/attachment")
 public class AttachmentController {
