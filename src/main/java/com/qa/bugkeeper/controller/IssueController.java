@@ -1,16 +1,18 @@
-package com.qa.bugkeeper.issue;
+package com.qa.bugkeeper.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.qa.bugkeeper.priority.PriorityRepository;
-import com.qa.bugkeeper.project.Project;
-import com.qa.bugkeeper.project.ProjectRepository;
-import com.qa.bugkeeper.project.View;
-import com.qa.bugkeeper.status.StatusRepository;
-import com.qa.bugkeeper.user.UserRepository;
+import com.qa.bugkeeper.entity.Issue;
+import com.qa.bugkeeper.repository.IssueRepository;
+import com.qa.bugkeeper.service.IssueService;
+import com.qa.bugkeeper.repository.PriorityRepository;
+import com.qa.bugkeeper.entity.Project;
+import com.qa.bugkeeper.repository.ProjectRepository;
+import com.qa.bugkeeper.entity.View;
+import com.qa.bugkeeper.repository.StatusRepository;
+import com.qa.bugkeeper.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +21,11 @@ import java.util.Objects;
 
 import static com.qa.bugkeeper.constant.BugKeeperConstants.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class IssueController {
+
+    public static final String ISSUE = "issue";
 
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
@@ -56,7 +60,7 @@ public class IssueController {
         model.addAttribute(STATUSES, statusRepository.findAll());
         model.addAttribute(USERS, userRepository.findAll());
         model.addAttribute(ACTION, "creation");
-        return "issue";
+        return ISSUE;
     }
 
     @PostMapping(value = "/issues/save")
@@ -73,11 +77,10 @@ public class IssueController {
 
         model.addAttribute(ISSUE, issueRepository.getReferenceById(id));
         model.addAttribute(ACTION, "show");
-        return "issue";
+        return ISSUE;
     }
 
     @JsonView(View.Issues.class)
-    @ResponseBody
     @GetMapping(value = "/issues/{id}")
     public Issue getIssue(@PathVariable(ID) long id) {
         return issueRepository.getReferenceById(id);
@@ -94,7 +97,7 @@ public class IssueController {
         model.addAttribute(STATUSES, statusRepository.findAll());
         model.addAttribute(USERS, userRepository.findAll());
         model.addAttribute(ACTION, "update");
-        return "issue";
+        return ISSUE;
     }
 
     @DeleteMapping(value = "/issues/{id}")

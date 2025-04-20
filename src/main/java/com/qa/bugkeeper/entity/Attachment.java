@@ -1,18 +1,19 @@
-package com.qa.bugkeeper.issue.attachment;
+package com.qa.bugkeeper.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.qa.bugkeeper.issue.Issue;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Table
 @Entity
-public class Attachment {
+public class Attachment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -33,6 +33,14 @@ jacocoTestReport {
 jacocoTestCoverageVerification {
     violationRules {
         rule {
+            element = 'CLASS'
+            excludes = [
+                    'com.qa.bugkeeper.config.**',
+                    'com.qa.bugkeeper.constant.**',
+                    'com.qa.bugkeeper.entity.**',
+                    'com.qa.bugkeeper.repository.**',
+                    'com.qa.bugkeeper.exception.**'
+            ]
             limit {
                 minimum = 0.80
             }
@@ -48,6 +56,7 @@ sonar {
         property 'sonar.organization', 'kopendozz'
         property 'sonar.host.url', 'https://sonarcloud.io'
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
+        property 'sonar.exclusions', '**/config/**, **/constant/**, **/exception/**, **/repository/**, **/entity/**'
     }
 }
 

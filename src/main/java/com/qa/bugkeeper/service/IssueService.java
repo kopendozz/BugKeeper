@@ -1,6 +1,8 @@
-package com.qa.bugkeeper.issue;
+package com.qa.bugkeeper.service;
 
+import com.qa.bugkeeper.entity.Issue;
 import com.qa.bugkeeper.google.GoogleTranslateService;
+import com.qa.bugkeeper.repository.IssueRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

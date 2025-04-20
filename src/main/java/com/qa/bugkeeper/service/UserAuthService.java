@@ -1,5 +1,6 @@
-package com.qa.bugkeeper.user;
+package com.qa.bugkeeper.service;
 
+import com.qa.bugkeeper.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

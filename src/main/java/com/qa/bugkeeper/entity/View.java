@@ -1,4 +1,4 @@
-package com.qa.bugkeeper.project;
+package com.qa.bugkeeper.entity;
 
 public class View {
 

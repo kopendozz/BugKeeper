@@ -1,16 +1,16 @@
-package com.qa.bugkeeper.auth;
+package com.qa.bugkeeper.controller;
 
-import com.qa.bugkeeper.user.UserRepository;
+import com.qa.bugkeeper.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
 import static com.qa.bugkeeper.constant.BugKeeperConstants.CURRENT_USER;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class AuthenticationController {
 
