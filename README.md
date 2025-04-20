@@ -1,7 +1,7 @@
 # BugKeeper - QA Automation Test Bed
 
-![Build](https://github.com/kopendozz/BugKeeper/actions/workflows/gradle.yml/badge.svg)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=kopendozz_BugKeeper&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=<org>_<repo>)
+![Build](https://github.com/kopendozz/BugKeeper/actions/workflows/ci.yml/badge.svg)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=kopendozz_BugKeeper&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kopendozz_BugKeeper)
 
 ---
 
