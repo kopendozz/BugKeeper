@@ -2,12 +2,36 @@ plugins {
     id 'java'
     id 'jacoco'
     id 'org.sonarqube' version '6.1.0.5360'
-    id 'org.springframework.boot' version '3.2.5'
+    id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.qa'
 version = '0.0.1-SNAPSHOT'
+
+ext {
+    jacocoExcludes = [
+            'com.qa.bugkeeper.BugKeeperApplication',
+            'com.qa.bugkeeper.config.*',
+            'com.qa.bugkeeper.constant.*',
+            'com.qa.bugkeeper.exception.*',
+            'com.qa.bugkeeper.repository.*',
+            'com.qa.bugkeeper.entity.*',
+            'com.qa.bugkeeper.dto.*',
+            'com.qa.bugkeeper.mapper.*',
+    ]
+
+    sonarExcludes = [
+            '**/BugKeeperApplication.java',
+            '**/config/**',
+            '**/constant/**',
+            '**/exception/**',
+            '**/repository/**',
+            '**/entity/**',
+            '**/dto/**',
+            '**/mapper/**',
+    ]
+}
 
 java {
     sourceCompatibility = '21'
@@ -34,13 +58,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             element = 'CLASS'
-            excludes = [
-                    'com.qa.bugkeeper.config.**',
-                    'com.qa.bugkeeper.constant.**',
-                    'com.qa.bugkeeper.entity.**',
-                    'com.qa.bugkeeper.repository.**',
-                    'com.qa.bugkeeper.exception.**'
-            ]
+            excludes = jacocoExcludes
             limit {
                 minimum = 0.80
             }
@@ -56,7 +74,7 @@ sonar {
         property 'sonar.organization', 'kopendozz'
         property 'sonar.host.url', 'https://sonarcloud.io'
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
-        property 'sonar.exclusions', '**/config/**, **/constant/**, **/exception/**, **/repository/**, **/entity/**'
+        property 'sonar.exclusions', sonarExcludes.join(',')
     }
 }
 
@@ -65,39 +83,55 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // Spring Boot Core
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1'
+
+    // Security - JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    // Configuration Properties support
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+
+    // Database + Migration
     implementation 'org.postgresql:postgresql:42.7.3'
-    implementation 'org.flywaydb:flyway-core:10.11.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.17.0'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.17.0'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
-    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.flywaydb:flyway-core:11.7.2'
+    runtimeOnly 'org.flywaydb:flyway-database-postgresql:11.7.2'
+
+    // Spring Cloud OpenFeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.1'
+
+    // Commons Utilities
+    implementation 'commons-io:commons-io:2.19.0'
     implementation 'commons-fileupload:commons-fileupload:1.5'
     implementation 'org.apache.commons:commons-lang3:3.14.0'
-    implementation 'org.webjars:bootstrap:3.4.1'
-    implementation 'org.webjars:jquery:1.12.4'
-    implementation 'org.webjars:jquery-validation:1.20.0'
-    implementation 'org.webjars:jquery-ui:1.13.2'
-    implementation 'org.webjars:datatables:1.13.5'
-    implementation 'org.webjars:pure:0.6.2'
-    implementation 'org.webjars.npm:tokenize2:1.3.0'
+
+    // Dev Tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.32'
-    runtimeOnly 'org.flywaydb:flyway-database-postgresql:10.11.0'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
     testCompileOnly 'org.projectlombok:lombok:1.18.32'
+
+    //Validation
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.1'
+
+    // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.assertj:assertj-core:3.27.3'
     testImplementation 'org.mockito:mockito-core:5.17.0'
-
+    testImplementation 'com.h2database:h2:2.3.232'
     testImplementation platform('org.junit:junit-bom:5.12.2')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly  'org.junit.jupiter:junit-jupiter-engine'
-    testRuntimeOnly  'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

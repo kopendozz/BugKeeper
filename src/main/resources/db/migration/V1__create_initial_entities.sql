@@ -2,6 +2,8 @@
 -- Create project table and seed default data
 --
 
+create sequence if not exists project_id_seq start with 1 increment by 1;
+
 create table if not exists project
 (
     id   bigserial primary key,
@@ -11,7 +13,6 @@ create table if not exists project
 insert into project
 values (nextval('project_id_seq'), 'Gemini'),
        (nextval('project_id_seq'), 'Apollo');
-
 
 --
 -- Create users table and seed default data
@@ -28,7 +29,7 @@ create table if not exists users
 );
 
 insert into users
-VALUES ('kevin', 'ADMIN', 'Kevin', 'Mazepa', '$2a$12$CqC6wuQlzt//jTfEBlzW3OAq4QtWuAM5X5h86Mk405rRVdKw3LvEi', true),
+values ('kevin', 'ADMIN', 'Kevin', 'Mazepa', '$2a$12$CqC6wuQlzt//jTfEBlzW3OAq4QtWuAM5X5h86Mk405rRVdKw3LvEi', true),
        ('sarah', 'USER', 'Sarah', 'Shevcheko', '$2a$12$xS2OQgKQJmUAkswF/lnMne5NWqGTDJyIng0iB7nXpviOQUhuAVcCu', true);
 
 --
@@ -51,6 +52,8 @@ values ('kevin', (select id from project where name = 'Gemini')),
 -- Create priority table and seed default data
 --
 
+create sequence if not exists priority_id_seq start with 1 increment by 1;
+
 create table if not exists priority
 (
     id   bigserial   not null primary key,
@@ -66,6 +69,8 @@ values (nextval('priority_id_seq'), 'Critical'),
 --
 -- Create status table and seed default data
 --
+
+create sequence if not exists status_id_seq start with 1 increment by 1;
 
 create table if not exists status
 (

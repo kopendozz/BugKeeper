@@ -7,3 +7,8 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+google:
+  translate:
+    url: https://translation.googleapis.com
+jwt:
+  expiration-ms: 3600000
