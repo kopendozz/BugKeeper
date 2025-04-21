@@ -1,9 +1,10 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bugkeeper
-    username: bugkeeper
+    username: ${DB_USER:bugkeeper}
     password: ${DB_PASS}
 google:
   translate:
-    url: https://translation.googleapis.com
     api_key: ${API_KEY}
+jwt:
+  secret: ${ENCODED_SECRET} # base64-encoded key

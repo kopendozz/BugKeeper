@@ -5,6 +5,7 @@ import com.qa.bugkeeper.exception.ResourceNotFoundException;
 import com.qa.bugkeeper.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class UserService {
 
     public void deactivateUser(String username) {
         var user = findUser(username);
-        if (!user.getEnabled()) return;
+        if (BooleanUtils.isFalse(user.getEnabled())) return;
         user.setEnabled(false);
         userRepository.save(user);
     }

@@ -14,7 +14,7 @@ This software is licensed under the [Apache License 2.0]
 
 ## Overview
 
-**BugKeeper** is a full-fledged MVC application designed as a **hands-on QA automation test bed**. It’s intentionally loaded with real-world challenges to help developers and testers explore best practices across UI, API, and integration automation.
+**BugKeeper** is a fully decoupled, token-secured, API-first bug tracking platform designed as a modern test and development playground.
 
 ---
 
@@ -37,14 +37,17 @@ This software is licensed under the [Apache License 2.0]
 
 ## Technologies
 
-| Layer       | Technology                                           |
-|-------------|------------------------------------------------------|
-| Backend     | Spring Boot, Spring MVC, Spring JPA, Spring Security |
-| UI          | Thymeleaf, Bootstrap, AJAX                           |
-| Integration | OpenFeign + Google Translate API                     |
-| Testing     | JUnit, JaCoCo                                        |
-| Analysis    | SonarCloud                                           |
-| CI/CD       | GitHub Actions                                       |
+| Layer        | Technology                                                                 |
+|--------------|----------------------------------------------------------------------------|
+| Backend      | Spring Boot 3.x, Spring Web (REST), Spring Security (JWT), Spring Data JPA |
+| DTO Mapping  | MapStruct                                                                  |
+| Database     | PostgreSQL (prod), H2 (test), Flyway (migrations)                          |
+| Integration  | OpenFeign, Google Translate API                                            |
+| Security     | JWT (stateless), BCrypt, Custom Filter, SecurityContext                    |
+| Testing      | JUnit 5, Mockito, AssertJ, MockMvc, H2 (in-memory), JaCoCo                 |
+| Code Quality | SonarCloud (rules, coverage, exclusions)                                   |
+| CI/CD        | GitHub Actions                                                             |
+
 ---
 
 ## Requirements
@@ -71,7 +74,6 @@ docker run --name bugkeeper -e POSTGRES_DB=bugkeeper -e POSTGRES_USER=bugkeeper 
 
 2. **Clone and Open the Project**
 
-
 ```bash
 git clone https://github.com/kopendozz/BugKeeper.git
 cd BugKeeper
@@ -85,7 +87,8 @@ cd BugKeeper
     - Set the **active profile** to `local`
     - Set the following environment variables:
         - `DB_PASS` = `<secure_password>`
-        - `API_KEY` = your Google Translate API key from [GCP Console](https://console.cloud.google.com/apis/api/translate.googleapis.com/credentials)
+        - `API_KEY` = your Google Translate API key
+          from [GCP Console](https://console.cloud.google.com/apis/api/translate.googleapis.com/credentials)
 
 4. **Run the Application**
 
@@ -107,4 +110,5 @@ This project includes a full CI pipeline:
 
 ## Status
 
-Actively maintained. Designed for learning, experimentation, and proving your QA/dev skills under real-world testability conditions.
+Actively maintained. Designed for learning, experimentation, and proving your QA/dev skills under real-world testability
+conditions.
