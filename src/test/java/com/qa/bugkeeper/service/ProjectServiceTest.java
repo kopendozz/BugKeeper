@@ -5,23 +5,20 @@ import com.qa.bugkeeper.entity.Project;
 import com.qa.bugkeeper.exception.ResourceNotFoundException;
 import com.qa.bugkeeper.mapper.ProjectMapper;
 import com.qa.bugkeeper.repository.ProjectRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.qa.bugkeeper.service.ProjectService.PROJECT_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class ProjectServiceTest {
+class ProjectServiceTest extends BaseServiceTest {
 
     @Mock
     ProjectRepository projectRepository;
@@ -36,40 +33,46 @@ class ProjectServiceTest {
     class FindProject {
 
         @Test
-        @DisplayName("should return DTO when project exists")
         void shouldReturnProjectDto() {
             // given
-            var project = new Project();
-            project.setId(1L);
-            project.setName("Beta");
+            var id = 1L;
+            var name = "Beta";
+            var project = Project.builder()
+                    .id(id)
+                    .name(name)
+                    .build();
+            var dto = ProjectDto.builder()
+                    .id(id)
+                    .name(name)
+                    .build();
 
-            var dto = new ProjectDto(1L, "Beta");
-
-            when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
+            when(projectRepository.findById(id)).thenReturn(Optional.of(project));
             when(projectMapper.toDto(project)).thenReturn(dto);
 
             // when
-            var result = projectService.findProject(1L);
+            var result = projectService.findProject(id);
 
             // then
             assertThat(result).isEqualTo(dto);
-            verify(projectRepository).findById(1L);
+            verify(projectRepository).findById(id);
             verify(projectMapper).toDto(project);
+            verifyNoMoreInteractions(projectRepository, projectMapper);
         }
 
         @Test
-        @DisplayName("should throw when project not found")
-        void shouldThrowWhenProjectNotFound() {
+        void shouldThrowResourceNotFoundException_whenProjectNotFound() {
             // given
-            when(projectRepository.findById(42L)).thenReturn(Optional.empty());
+            var id = 42L;
+            when(projectRepository.findById(id)).thenReturn(Optional.empty());
 
-            // when / then
-            assertThatThrownBy(() -> projectService.findProject(42L))
+            // when & then
+            assertThatThrownBy(() -> projectService.findProject(id))
                     .isInstanceOf(ResourceNotFoundException.class)
-                    .hasMessage("Project not found: 42");
+                    .hasMessage(PROJECT_NOT_FOUND + id);
 
-            verify(projectRepository).findById(42L);
+            verify(projectRepository).findById(id);
             verifyNoInteractions(projectMapper);
+            verifyNoMoreInteractions(projectRepository, projectMapper);
         }
     }
 
@@ -77,14 +80,18 @@ class ProjectServiceTest {
     class GetAllProjects {
 
         @Test
-        @DisplayName("should return all mapped DTOs")
         void shouldReturnAllProjectDtos() {
             // given
-            var project = new Project();
-            project.setId(1L);
-            project.setName("Alpha");
-
-            var dto = new ProjectDto(1L, "Alpha");
+            var id = 1L;
+            var name = "Alpha";
+            var project = Project.builder()
+                    .id(id)
+                    .name(name)
+                    .build();
+            var dto = ProjectDto.builder()
+                    .id(id)
+                    .name(name)
+                    .build();
 
             when(projectRepository.findAll()).thenReturn(List.of(project));
             when(projectMapper.toDtoList(List.of(project))).thenReturn(List.of(dto));
@@ -95,7 +102,24 @@ class ProjectServiceTest {
             // then
             assertThat(result).containsExactly(dto);
             verify(projectRepository).findAll();
-            verify(projectMapper).toDtoList(any());
+            verify(projectMapper).toDtoList(List.of(project));
+            verifyNoMoreInteractions(projectRepository, projectMapper);
+        }
+
+        @Test
+        void shouldReturnEmptyList_whenNoProjectsExist() {
+            // given
+            when(projectRepository.findAll()).thenReturn(List.of());
+            when(projectMapper.toDtoList(List.of())).thenReturn(List.of());
+
+            // when
+            var result = projectService.getAllProjects();
+
+            // then
+            assertThat(result).isEmpty();
+            verify(projectRepository).findAll();
+            verify(projectMapper).toDtoList(List.of());
+            verifyNoMoreInteractions(projectRepository, projectMapper);
         }
     }
 }
