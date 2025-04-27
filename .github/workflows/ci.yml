@@ -1,4 +1,4 @@
-name: CI - Test, Coverage & Sonar Analysis
+name: CI - Test & Coverage
 
 on:
   push:
