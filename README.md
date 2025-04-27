@@ -2,13 +2,7 @@
 
 ![Build](https://github.com/kopendozz/BugKeeper/actions/workflows/ci.yml/badge.svg)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=kopendozz_BugKeeper&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kopendozz_BugKeeper)
-
----
-
-## License
-
-This software is licensed under the [Apache License 2.0]
-(http://www.apache.org/licenses/LICENSE-2.0.html).
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kopendozz_BugKeeper&metric=coverage)](https://sonarcloud.io/summary/new_code?id=kopendozz_BugKeeper)
 
 ---
 
@@ -100,15 +94,7 @@ cd BugKeeper
 
 This project includes a full CI pipeline:
 
-- Unit testing
-- Code coverage via JaCoCo
-- Static analysis via SonarCloud
-- Quality gate badge on PRs
-- GitHub Actions-based pipeline with caching
-
----
-
-## Status
-
-Actively maintained. Designed for learning, experimentation, and proving your QA/dev skills under real-world testability
-conditions.
+- Build, test, generate coverage report;
+- Code analysis with SonarCloud;
+- Build fails if test coverage is below 80%;
+- Email notification on build failure;
