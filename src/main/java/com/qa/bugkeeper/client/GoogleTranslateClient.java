@@ -1,17 +1,18 @@
-package com.qa.bugkeeper.google;
+package com.qa.bugkeeper.client;
 
 import com.qa.bugkeeper.config.feign.BugKeeperClientConfig;
+import com.qa.bugkeeper.dto.DetectedLanguagesList;
+import com.qa.bugkeeper.dto.TranslationsList;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @FeignClient(value = "google-translate-client", url = "${google.translate.url}", configuration = BugKeeperClientConfig.class)
 public interface GoogleTranslateClient {
 
-    public static final String TRANSLATE_BASE_ENDPOINT = "/language/translate/v2";
-    public static final String DETECT_ENDPOINT = TRANSLATE_BASE_ENDPOINT + "/detect";
-    
+    String TRANSLATE_BASE_ENDPOINT = "/language/translate/v2";
+    String DETECT_ENDPOINT = TRANSLATE_BASE_ENDPOINT + "/detect";
+
     @PostMapping(value = DETECT_ENDPOINT)
     DetectedLanguagesList detectLanguage(@RequestParam("q") String q);
 

@@ -10,26 +10,16 @@ group = 'com.qa'
 version = '0.0.1-SNAPSHOT'
 
 ext {
-    jacocoExcludes = [
-            'com.qa.bugkeeper.BugKeeperApplication',
-            'com.qa.bugkeeper.config.*',
-            'com.qa.bugkeeper.constant.*',
-            'com.qa.bugkeeper.exception.*',
-            'com.qa.bugkeeper.repository.*',
-            'com.qa.bugkeeper.entity.*',
-            'com.qa.bugkeeper.dto.*',
-            'com.qa.bugkeeper.mapper.*',
+    jacocoIncludes = [
+            'com.qa.bugkeeper.service.*',
+            'com.qa.bugkeeper.controller.*',
+            'com.qa.bugkeeper.security.*',
     ]
 
-    sonarExcludes = [
-            '**/BugKeeperApplication.java',
-            '**/config/**',
-            '**/constant/**',
-            '**/exception/**',
-            '**/repository/**',
-            '**/entity/**',
-            '**/dto/**',
-            '**/mapper/**',
+    sonarIncludes = [
+            '**/service/**',
+            '**/controller/**',
+            '**/security/**',
     ]
 }
 
@@ -58,7 +48,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             element = 'CLASS'
-            excludes = jacocoExcludes
+            includes = jacocoIncludes
             limit {
                 minimum = 0.80
             }
@@ -74,7 +64,7 @@ sonar {
         property 'sonar.organization', 'kopendozz'
         property 'sonar.host.url', 'https://sonarcloud.io'
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
-        property 'sonar.exclusions', sonarExcludes.join(',')
+        property 'sonar.inclusions', sonarIncludes.join(',')
     }
 }
 

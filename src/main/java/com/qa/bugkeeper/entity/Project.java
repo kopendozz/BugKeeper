@@ -3,18 +3,18 @@ package com.qa.bugkeeper.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
+@Builder
 @Table
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Project implements Serializable {
 
     @Id
@@ -31,6 +31,7 @@ public class Project implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<Issue> issues;
 
+    @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_project", joinColumns = {@JoinColumn(name = "project_id")}, inverseJoinColumns = {@JoinColumn(name = "username")})
     @JsonView(View.Projects.class)
