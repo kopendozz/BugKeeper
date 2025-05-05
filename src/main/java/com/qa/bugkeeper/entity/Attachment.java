@@ -1,6 +1,5 @@
 package com.qa.bugkeeper.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +26,6 @@ public class Attachment implements Serializable {
     @Column(nullable = false, length = 45)
     private String name;
 
-    @JsonIgnore
     @Column(nullable = false)
     private byte[] attachment;
 

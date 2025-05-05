@@ -11,6 +11,7 @@ version = "0.0.1-SNAPSHOT"
 
 val mapstructVersion = "1.6.3"
 val lombokVersion = "1.18.32"
+val lombokMapStructBindingVersion = "0.2.0"
 val jjwtVersion = "0.12.6"
 val flywayVersion = "11.7.2"
 val postgresqlVersion = "42.7.3"
@@ -22,6 +23,7 @@ val h2Version = "2.3.232"
 val assertjVersion = "3.27.3"
 val mockitoVersion = "5.17.0"
 val validationApiVersion = "3.1.1"
+var swaggerVersion = "2.8.6"
 val junitBomVersion = "5.12.2"
 
 val jacocoIncludes = listOf(
@@ -125,10 +127,15 @@ dependencies {
     // Lombok
     compileOnly("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:$lombokMapStructBindingVersion")
     testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     // Validation
     implementation("jakarta.validation:jakarta.validation-api:$validationApiVersion")
+
+    // Swagger API Docs
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swaggerVersion")
 
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")

@@ -1,7 +1,5 @@
 package com.qa.bugkeeper.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @NoArgsConstructor
@@ -20,35 +19,27 @@ public class UserEntity implements Serializable {
 
     @Id
     @Column(unique = true, nullable = false, length = 45)
-    @JsonView(value = {View.Projects.class, View.Users.class, View.Issues.class})
     private String username;
 
     @Column(nullable = false, length = 45)
-    @JsonView(value = {View.Projects.class, View.Users.class})
     private String firstName;
 
     @Column(nullable = false, length = 45)
-    @JsonView(value = {View.Projects.class, View.Users.class})
     private String lastName;
 
     @Column(unique = true, nullable = false, length = 45)
-    @JsonView(value = {View.Projects.class, View.Users.class})
     private String password;
 
     @Column(nullable = false)
-    @JsonView(value = {View.Projects.class, View.Users.class})
     private String role;
 
     @Column(nullable = false)
-    @JsonView(value = {View.Projects.class, View.Users.class})
     private Boolean enabled;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "reporter")
     private List<Issue> issues;
 
     @Builder.Default
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
-    @JsonView(value = View.Users.class)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
     private Set<Project> projects = new HashSet<>();
 }

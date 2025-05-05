@@ -90,6 +90,13 @@ cd BugKeeper
 
 ---
 
+## API Docs (Swagger)
+
+- Interactive API Docs: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+- Powered by SpringDoc + OpenAPI 3.0
+
+---
+
 ## Continuous Integration
 
 This project includes a full CI pipeline:
