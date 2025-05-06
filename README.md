@@ -38,6 +38,7 @@
 | Database     | PostgreSQL (prod), H2 (test), Flyway (migrations)                          |
 | Integration  | OpenFeign, Google Translate API                                            |
 | Security     | JWT (stateless), BCrypt, Custom Filter, SecurityContext                    |
+| API Docs     | Swagger (OpenAPI 3.0)                                                      |
 | Testing      | JUnit 5, Mockito, AssertJ, MockMvc, H2 (in-memory), JaCoCo                 |
 | Code Quality | SonarCloud (rules, coverage, exclusions)                                   |
 | CI/CD        | GitHub Actions                                                             |
@@ -94,6 +95,12 @@ cd BugKeeper
 
 - Interactive API Docs: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 - Powered by SpringDoc + OpenAPI 3.0
+- **Authorization**:
+  - To interact with the API, use JWT for authentication.
+  - Obtain your token by sending a `POST` request to `/api/login` with your credentials (e.g., default username and password).
+  - After logging in, copy the **Bearer Token** from the response.
+  - Click on the "Authorize" button in the Swagger UI.
+  - Enter your **Bearer Token** and click **Authorize** to proceed.
 
 ---
 

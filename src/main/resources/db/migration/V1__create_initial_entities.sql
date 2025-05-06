@@ -29,7 +29,7 @@ create table if not exists users
 );
 
 insert into users
-values ('kevin', 'ADMIN', 'Kevin', 'Mazepa', '$2a$12$CqC6wuQlzt//jTfEBlzW3OAq4QtWuAM5X5h86Mk405rRVdKw3LvEi', true),
+values ('kevin', 'ADMIN', 'Kevin', 'Mazepa', '$2a$12$avgeItuKPzQvNPtMu40Jce1Trjtnbim2n3OtdWq/eL3hD/rGYkSFm', true),
        ('sarah', 'USER', 'Sarah', 'Shevcheko', '$2a$12$xS2OQgKQJmUAkswF/lnMne5NWqGTDJyIng0iB7nXpviOQUhuAVcCu', true);
 
 --
