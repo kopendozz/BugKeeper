@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,5 +105,33 @@ class ProjectControllerIT {
         mockMvc.perform(get("/projects")
                         .header("Authorization", "Bearer " + expiredToken))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("POST /projects with valid JWT should succeed")
+    void shouldCreateProject() throws Exception {
+        mockMvc.perform(post("/projects")
+                        .header("Authorization", "Bearer " + validToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"New Project\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("PUT /projects/{id} with valid JWT should succeed")
+    void shouldUpdateProject() throws Exception {
+        mockMvc.perform(put("/projects/1")
+                        .header("Authorization", "Bearer " + validToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Updated\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("DELETE /projects/{id} with valid JWT should succeed")
+    void shouldDeleteProject() throws Exception {
+        mockMvc.perform(delete("/projects/1")
+                        .header("Authorization", "Bearer " + validToken))
+                .andExpect(status().isOk());
     }
 }
