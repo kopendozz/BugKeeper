@@ -27,4 +27,23 @@ public class ProjectService {
                 .orElseThrow(() -> new ResourceNotFoundException(PROJECT_NOT_FOUND + projectId));
         return projectMapper.toDto(project);
     }
+
+    public void createProject(ProjectDto projectDto) {
+        var entity = projectMapper.toEntity(projectDto);
+        projectRepository.save(entity);
+    }
+
+    public void updateProject(Long projectId, ProjectDto projectDto) {
+        var project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException(PROJECT_NOT_FOUND + projectId));
+        project.setName(projectDto.getName());
+        projectRepository.save(project);
+    }
+
+    public void deleteProject(Long projectId) {
+        if (!projectRepository.existsById(projectId)) {
+            throw new ResourceNotFoundException(PROJECT_NOT_FOUND + projectId);
+        }
+        projectRepository.deleteById(projectId);
+    }
 }

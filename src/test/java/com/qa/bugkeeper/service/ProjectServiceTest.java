@@ -122,4 +122,85 @@ class ProjectServiceTest extends BaseServiceTest {
             verifyNoMoreInteractions(projectRepository, projectMapper);
         }
     }
+
+    @Nested
+    class CreateProject {
+
+        @Test
+        void shouldSaveProject() {
+            var dto = ProjectDto.builder().name("Alpha").build();
+            var entity = Project.builder().name("Alpha").build();
+
+            when(projectMapper.toEntity(dto)).thenReturn(entity);
+
+            projectService.createProject(dto);
+
+            verify(projectMapper).toEntity(dto);
+            verify(projectRepository).save(entity);
+            verifyNoMoreInteractions(projectRepository, projectMapper);
+        }
+    }
+
+    @Nested
+    class UpdateProject {
+
+        @Test
+        void shouldUpdateExistingProject() {
+            var id = 1L;
+            var existing = Project.builder().id(id).name("Old").build();
+            var dto = ProjectDto.builder().name("New").build();
+
+            when(projectRepository.findById(id)).thenReturn(Optional.of(existing));
+
+            projectService.updateProject(id, dto);
+
+            verify(projectRepository).findById(id);
+            verify(projectRepository).save(argThat(p -> p.getId().equals(id) && p.getName().equals("New")));
+            verifyNoMoreInteractions(projectRepository, projectMapper);
+        }
+
+        @Test
+        void shouldThrow_whenProjectNotFound() {
+            var id = 42L;
+            var dto = ProjectDto.builder().name("name").build();
+            when(projectRepository.findById(id)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> projectService.updateProject(id, dto))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessage(PROJECT_NOT_FOUND + id);
+
+            verify(projectRepository).findById(id);
+            verifyNoMoreInteractions(projectRepository);
+            verifyNoInteractions(projectMapper);
+        }
+    }
+
+    @Nested
+    class DeleteProject {
+
+        @Test
+        void shouldDelete_whenExists() {
+            var id = 1L;
+            when(projectRepository.existsById(id)).thenReturn(true);
+
+            projectService.deleteProject(id);
+
+            verify(projectRepository).existsById(id);
+            verify(projectRepository).deleteById(id);
+            verifyNoMoreInteractions(projectRepository);
+        }
+
+        @Test
+        void shouldThrow_whenProjectMissing() {
+            var id = 42L;
+            when(projectRepository.existsById(id)).thenReturn(false);
+
+            assertThatThrownBy(() -> projectService.deleteProject(id))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessage(PROJECT_NOT_FOUND + id);
+
+            verify(projectRepository).existsById(id);
+            verifyNoMoreInteractions(projectRepository);
+        }
+    }
 }
